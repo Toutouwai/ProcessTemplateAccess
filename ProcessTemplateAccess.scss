@@ -1,0 +1,13 @@
+#ProcessTemplateAccessTable {
+	.pta-access-col { width:60%; }
+	i { cursor:pointer;
+		&.create-disabled, &.view-disabled  { cursor:not-allowed; }
+	}
+	tr:hover td { background:none !important; }
+	.access-table {
+		&.unmanaged { display:none; }
+		td { padding-top:0; padding-bottom:0; }
+	}
+	.state-true { color:#e83561; }
+	.state-false { color:#d5d5d5; }
+}

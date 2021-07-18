@@ -1,0 +1,17 @@
+#ProcessTemplateAccessTable .pta-access-col {
+  width: 60%; }
+#ProcessTemplateAccessTable i {
+  cursor: pointer; }
+  #ProcessTemplateAccessTable i.create-disabled, #ProcessTemplateAccessTable i.view-disabled {
+    cursor: not-allowed; }
+#ProcessTemplateAccessTable tr:hover td {
+  background: none !important; }
+#ProcessTemplateAccessTable .access-table.unmanaged {
+  display: none; }
+#ProcessTemplateAccessTable .access-table td {
+  padding-top: 0;
+  padding-bottom: 0; }
+#ProcessTemplateAccessTable .state-true {
+  color: #e83561; }
+#ProcessTemplateAccessTable .state-false {
+  color: #d5d5d5; }
