@@ -5,11 +5,11 @@ class ProcessTemplateAccess extends Process {
 	/**
 	 * Module information
 	 */
-	public static function getModuleinfo() {
+	public static function getModuleInfo() {
 		return array(
 			'title' => 'Template Access',
 			'summary' => 'Provides an editable overview of roles that can access each template.',
-			'version' => '0.1.0',
+			'version' => '0.1.1',
 			'author' => 'Robin Sallis',
 			'href' => 'https://github.com/Toutouwai/ProcessTemplateAccess',
 			'icon' => 'cubes',
