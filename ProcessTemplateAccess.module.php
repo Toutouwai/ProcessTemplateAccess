@@ -3,25 +3,6 @@
 class ProcessTemplateAccess extends Process {
 
 	/**
-	 * Module information
-	 */
-	public static function getModuleInfo() {
-		return array(
-			'title' => 'Template Access',
-			'summary' => 'Provides an editable overview of roles that can access each template.',
-			'version' => '0.1.1',
-			'author' => 'Robin Sallis',
-			'href' => 'https://github.com/Toutouwai/ProcessTemplateAccess',
-			'icon' => 'cubes',
-			'requires' => 'ProcessWire>=3.0.0, PHP>=5.4.0',
-			'page' => array(
-				'name' => 'template-access',
-				'title' => 'Template Access',
-				'parent' => 'setup',
-			),
-		);
-	}
-	/**
 	 * Init
 	 */
 	public function init() {
@@ -37,13 +18,14 @@ class ProcessTemplateAccess extends Process {
 	 * Execute
 	 */
 	public function ___execute() {
-
 		$templates = $this->wire()->templates;
 		$modules = $this->wire()->modules;
+		$roles = $this->wire()->roles;
+		$input = $this->wire()->input;
 
-		if($this->wire()->input->post('submit')) {
+		if($input->post('submit')) {
 			$changed_templates = new TemplatesArray();
-			foreach($this->wire()->input->post as $key => $value) {
+			foreach($input->post as $key => $value) {
 				if(substr($key, 0, 4) !== 'pta:') continue;
 				$value = (int) $value;
 				$pieces = explode(':', $key);
@@ -54,12 +36,17 @@ class ProcessTemplateAccess extends Process {
 				} else {
 					list($junk, $template_name, $role_id, $type) = $pieces;
 					$role_id = (int) $role_id;
+					$role = $roles->get($role_id);
 					$template = $templates->get($template_name);
 					$changed_templates->add($template);
 					if($value) {
-						$template->addRole($role_id, $type);
+						if(!$role->hasPermission('page-edit')) {
+							$role->addPermission('page-edit');
+							$role->save();
+						}
+						$template->addRole($role, $type);
 					} else {
-						$template->removeRole($role_id, $type);
+						$template->removeRole($role, $type);
 					}
 				}
 			}
@@ -71,8 +58,19 @@ class ProcessTemplateAccess extends Process {
 
 		$out = '';
 
+		// Filter
+		$placeholder = $this->_('Filter by template name...');
+		$out .= <<<EOT
+<div id="pta-filter-wrap">
+	<input class="uk-input" id="pta-filter" type="text" placeholder="$placeholder">
+	<i class="fa fa-search" id="pta-icon-search"></i>
+	<i class="fa fa-times-circle" id="pta-icon-clear"></i>
+</div>
+EOT;
+
+
 		/* @var $table MarkupAdminDataTable */
-		$table = $this->wire()->modules->get('MarkupAdminDataTable');
+		$table = $modules->get('MarkupAdminDataTable');
 		$table->setID($this->className . 'Table');
 		$table->encodeEntities = false;
 		$table->sortable = false;
@@ -92,7 +90,9 @@ class ProcessTemplateAccess extends Process {
 			$row = [];
 
 			// Template name and edit link
-			$row["$template->name "] = $this->wire()->config->urls->admin . "setup/template/edit?id={$template->id}#tab_access";
+			$link = $this->wire()->config->urls->admin . "setup/template/edit?id={$template->id}#tab_access";
+			$link = "<a class='pta-template' href='$link'>$template->name</a>";
+			$row[] = $link;
 
 			// Is access managed for the template?
 			$class = $managed ? 'fa-check state-true' : 'fa-minus-circle state-false';
@@ -102,7 +102,7 @@ class ProcessTemplateAccess extends Process {
 			$class = $managed ? '' : ' unmanaged';
 			$access_str = "<table class='access-table{$class}'>";
 			$guest_viewable = $template->roles->has('guest');
-			foreach($this->wire()->roles->find("name!=superuser") as $role) {
+			foreach($roles->find("name!=superuser") as $role) {
 				$access_str .= "<tr class='role-{$role->name}'><td>$role->name</td>";
 				// View
 				$viewable = (int) $template->roles->has($role);
@@ -134,7 +134,7 @@ class ProcessTemplateAccess extends Process {
 			}
 			$access_str .= '</table>';
 			$row[] = $access_str;
-			$table->row($row);
+			$table->row($row, ['class' => 'pta-row']);
 		}
 
 		$out .= $table->render();

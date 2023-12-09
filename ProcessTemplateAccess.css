@@ -1,3 +1,28 @@
+#pta-filter-wrap {
+  position: relative;
+  max-width: 300px; }
+  #pta-filter-wrap i {
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
+    opacity: 0.4;
+    z-index: 2; }
+
+#pta-icon-search {
+  left: 8px; }
+
+#pta-icon-clear {
+  right: 8px;
+  display: none;
+  cursor: pointer; }
+  #pta-icon-clear:hover {
+    opacity: 0.8; }
+
+#pta-filter {
+  padding-left: 28px; }
+  #pta-filter:focus + i {
+    opacity: 0.8; }
+
 #ProcessTemplateAccessTable .pta-access-col {
   width: 60%; }
 #ProcessTemplateAccessTable i {
