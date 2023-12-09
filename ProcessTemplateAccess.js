@@ -2,27 +2,51 @@
 
 	$(document).ready(function() {
 
-		var $datatable = $('#ProcessTemplateAccessTable');
-		var $pta_inputs = $('#pta-inputs');
+		const $datatable = $('#ProcessTemplateAccessTable');
+		const $pta_inputs = $('#pta-inputs');
+		const $filter = $('#pta-filter');
+		const $filter_clear = $('#pta-icon-clear');
+		const $pta_rows = $('.pta-row');
+
+		// Template filter
+		$filter.on('keyup', function() {
+			const value = $(this).val();
+			if(value.length) {
+				$pta_rows.hide();
+				$pta_rows.filter(function() {
+					//return $(this).find('.pta-template:contains(' + value + ')').length;
+					return $(this).find(`.pta-template:contains(${value})`).length;
+				}).show();
+				$filter_clear.show();
+			} else {
+				$pta_rows.show();
+				$filter_clear.hide();
+			}
+		});
+
+		$filter_clear.on('click', function(event) {
+			event.preventDefault();
+			$filter.val('').trigger('focus').trigger('keyup');
+		});
 
 		// Toggle the icon state and add/remove associated input
 		function toggleIcon($icon, new_value) {
-			var id = $icon.data('id');
-			var orig = $icon.data('orig');
+			const id = $icon.data('id');
+			const orig = $icon.data('orig');
 
 			if(new_value === orig) {
 				// Value is being changed to what it was when originally loaded
 				// So remove the input from the form
-				var $input = $pta_inputs.find('#' + id.replaceAll(':', '\\:'));
+				const $input = $pta_inputs.find('#' + id.replaceAll(':', '\\:'));
 				if($input.length) $input.remove();
 			} else {
 				// Add an input to the form
-				$pta_inputs.append('<input type="hidden" id="' + id + '" name="' + id + '" value="' + new_value + '">');
+				$pta_inputs.append(`<input type="hidden" id="${id}" name="${id}" value="${new_value}">`);
 			}
 
 			// Managed icon clicked
 			if($icon.hasClass('pta-managed')) {
-				var $access_table = $icon.closest('td').next('td').find('.access-table');
+				const $access_table = $icon.closest('td').next('td').find('.access-table');
 				// Set icon classes
 				if(new_value) {
 					$icon.removeClass('fa-minus-circle state-false');
@@ -59,7 +83,7 @@
 
 			// The state of the create icon depends on the state of the edit icon
 			if($icon.hasClass('pta-edit-icon')) {
-				var $create_icon = $icon.closest('td').next('td').find('.pta-create-icon');
+				const $create_icon = $icon.closest('td').next('td').find('.pta-create-icon');
 				if(new_value) {
 					// Enable create
 					$create_icon.removeClass('create-disabled');
@@ -72,10 +96,9 @@
 
 			// Guest view access implies all roles have view access
 			if($icon.hasClass('pta-view-icon')) {
-				var $tr = $icon.parents('tr.role-guest');
+				const $tr = $icon.parents('tr.role-guest');
 				if($tr.length) {
-					console.log('go');
-					var $other_view_icons = $tr.siblings('tr').find('.pta-view-icon');
+					const $other_view_icons = $tr.siblings('tr').find('.pta-view-icon');
 					if(new_value) {
 						$other_view_icons.addClass('view-disabled');
 						$other_view_icons.each(function() {

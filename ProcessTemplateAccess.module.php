@@ -58,6 +58,17 @@ class ProcessTemplateAccess extends Process {
 
 		$out = '';
 
+		// Filter
+		$placeholder = $this->_('Filter by template name...');
+		$out .= <<<EOT
+<div id="pta-filter-wrap">
+	<input class="uk-input" id="pta-filter" type="text" placeholder="$placeholder">
+	<i class="fa fa-search" id="pta-icon-search"></i>
+	<i class="fa fa-times-circle" id="pta-icon-clear"></i>
+</div>
+EOT;
+
+
 		/* @var $table MarkupAdminDataTable */
 		$table = $modules->get('MarkupAdminDataTable');
 		$table->setID($this->className . 'Table');
@@ -79,7 +90,9 @@ class ProcessTemplateAccess extends Process {
 			$row = [];
 
 			// Template name and edit link
-			$row["$template->name "] = $this->wire()->config->urls->admin . "setup/template/edit?id={$template->id}#tab_access";
+			$link = $this->wire()->config->urls->admin . "setup/template/edit?id={$template->id}#tab_access";
+			$link = "<a class='pta-template' href='$link'>$template->name</a>";
+			$row[] = $link;
 
 			// Is access managed for the template?
 			$class = $managed ? 'fa-check state-true' : 'fa-minus-circle state-false';
@@ -121,7 +134,7 @@ class ProcessTemplateAccess extends Process {
 			}
 			$access_str .= '</table>';
 			$row[] = $access_str;
-			$table->row($row);
+			$table->row($row, ['class' => 'pta-row']);
 		}
 
 		$out .= $table->render();
