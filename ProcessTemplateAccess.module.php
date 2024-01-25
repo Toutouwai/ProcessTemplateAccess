@@ -111,7 +111,7 @@ EOT;
 				$class = $viewable ? 'state-true' : 'state-false';
 				$icon_class = $role->name !== 'guest' && $guest_viewable ? ' view-disabled' : '';
 				$title = $this->_('View');
-				$access_str .= "<td class='$class'><i class='pta-icon pta-view-icon fa fa-eye{$icon_class}' title='$title' data-id='pta:{$template->name}:{$role->id}:view' data-orig='$viewable' data-value='$viewable'></i></td>";
+				$access_str .= "<td class='$class'><i class='pta-icon pta-view-icon fa fa-eye{$icon_class}' uk-tooltip='$title' data-id='pta:{$template->name}:{$role->id}:view' data-orig='$viewable' data-value='$viewable'></i></td>";
 				if($role->name === 'guest') {
 					$access_str .= '<td></td><td></td><td></td>';
 				} else {
@@ -119,18 +119,18 @@ EOT;
 					$editable = (int) in_array($role->id, $template->editRoles);
 					$class = $editable ? 'state-true' : 'state-false';
 					$title = $this->_('Edit');
-					$access_str .= "<td class='$class'><i class='pta-icon pta-edit-icon fa fa-pencil-square-o' title='$title' data-id='pta:{$template->name}:{$role->id}:edit' data-orig='$editable' data-value='$editable'></i></td>";
+					$access_str .= "<td class='$class'><i class='pta-icon pta-edit-icon fa fa-pencil-square-o' uk-tooltip='$title' data-id='pta:{$template->name}:{$role->id}:edit' data-orig='$editable' data-value='$editable'></i></td>";
 					// Create
 					$createable = (int) in_array($role->id, $template->createRoles);
 					$class = $createable ? 'state-true' : 'state-false';
 					$icon_class = $editable ? '' : ' create-disabled';
 					$title = $this->_('Create');
-					$access_str .= "<td class='$class'><i class='pta-icon pta-create-icon fa fa-plus-circle{$icon_class}' title='$title' data-id='pta:{$template->name}:{$role->id}:create' data-orig='$createable' data-value='$createable'></i></td>";
+					$access_str .= "<td class='$class'><i class='pta-icon pta-create-icon fa fa-plus-circle{$icon_class}' uk-tooltip='$title' data-id='pta:{$template->name}:{$role->id}:create' data-orig='$createable' data-value='$createable'></i></td>";
 					// Add children
 					$addable = (int) in_array($role->id, $template->addRoles);
 					$class = $addable ? 'state-true' : 'state-false';
 					$title = $this->_('Add children');
-					$access_str .= "<td class='$class'><i class='pta-icon pta-add-icon fa fa-indent' title='$title' data-id='pta:{$template->name}:{$role->id}:add' data-orig='$addable' data-value='$addable'></i></td>";
+					$access_str .= "<td class='$class'><i class='pta-icon pta-add-icon fa fa-indent' uk-tooltip='$title' data-id='pta:{$template->name}:{$role->id}:add' data-orig='$addable' data-value='$addable'></i></td>";
 					$access_str .= '</tr>';
 				}
 			}
