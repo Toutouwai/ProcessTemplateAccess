@@ -46,16 +46,17 @@
 
 			// Managed icon clicked
 			if($icon.hasClass('pta-managed')) {
-				const $access_table = $icon.closest('td').next('td').find('.access-table');
+				const $row = $icon.closest('tr');
+				const $access_table = $row.find('.access-table');
 				// Set icon classes
 				if(new_value) {
 					$icon.removeClass('fa-minus-circle state-false');
 					$icon.addClass('fa-check state-true');
-					$access_table.removeClass('unmanaged');
+					$row.removeClass('unmanaged');
 				} else {
 					$icon.removeClass('fa-check state-true');
 					$icon.addClass('fa-minus-circle state-false');
-					$access_table.addClass('unmanaged');
+					$row.addClass('unmanaged');
 				}
 				// Toggle guest view icon
 				toggleIcon($access_table.find('.role-guest .pta-view-icon'), new_value);

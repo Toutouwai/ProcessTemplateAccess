@@ -29,11 +29,14 @@ class ProcessTemplateAccess extends Process {
 				if(substr($key, 0, 4) !== 'pta:') continue;
 				$value = (int) $value;
 				$pieces = explode(':', $key);
+				// Managed
 				if($pieces[2] === 'managed') {
 					$template = $templates->get($pieces[1]);
 					$changed_templates->add($template);
 					$template->useRoles = $value;
-				} else {
+				}
+				// Role access
+				else {
 					list($junk, $template_name, $role_id, $type) = $pieces;
 					$role_id = (int) $role_id;
 					$role = $roles->get($role_id);
@@ -99,8 +102,7 @@ EOT;
 			$row[] = "<i data-id='pta:{$template->name}:managed' data-orig='$managed' data-value='$managed' class='pta-icon pta-managed fa $class'></i>";
 
 			// The access that each role has
-			$class = $managed ? '' : ' unmanaged';
-			$access_str = "<table class='access-table{$class}'>";
+			$access_str = "<table class='access-table'>";
 			$guest_viewable = $template->roles->has('guest');
 			foreach($roles->find("name!=superuser") as $role) {
 				$access_str .= "<tr class='role-{$role->name}'><td>$role->name</td>";
@@ -134,7 +136,9 @@ EOT;
 			}
 			$access_str .= '</table>';
 			$row[] = $access_str;
-			$table->row($row, ['class' => 'pta-row']);
+
+			$class = $managed ? '' : ' unmanaged';
+			$table->row($row, ['class' => "pta-row$class"]);
 		}
 
 		$out .= $table->render();

@@ -31,8 +31,6 @@
     cursor: not-allowed; }
 #ProcessTemplateAccessTable tr:hover td {
   background: none !important; }
-#ProcessTemplateAccessTable .access-table.unmanaged {
-  display: none; }
 #ProcessTemplateAccessTable .access-table td {
   padding-top: 0;
   padding-bottom: 0; }
@@ -40,3 +38,7 @@
   color: #e83561; }
 #ProcessTemplateAccessTable .state-false {
   color: #d5d5d5; }
+#ProcessTemplateAccessTable tr.unmanaged .access-table {
+  display: none; }
+#ProcessTemplateAccessTable tr.unmanaged .pta-inherit {
+  display: none; }

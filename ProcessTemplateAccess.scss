@@ -16,9 +16,12 @@
 	}
 	tr:hover td { background:none !important; }
 	.access-table {
-		&.unmanaged { display:none; }
 		td { padding-top:0; padding-bottom:0; }
 	}
 	.state-true { color:#e83561; }
 	.state-false { color:#d5d5d5; }
+	tr.unmanaged {
+		.access-table { display:none; }
+		.pta-inherit { display:none; }
+	}
 }
