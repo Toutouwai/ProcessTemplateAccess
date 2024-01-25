@@ -6,7 +6,7 @@ The module makes it quick and easy to see which templates have access control en
 
 ## Usage
 
-The Template Access page under the Setup menu shows access information for all non-system templates in a table.
+The Template Access page under the Access menu shows access information for all non-system templates in a table.
 
 You can filter the table rows by template name if needed. 
 

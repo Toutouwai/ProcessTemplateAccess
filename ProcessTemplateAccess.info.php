@@ -3,7 +3,7 @@
 $info = array(
 	'title' => 'Template Access',
 	'summary' => 'Provides an editable overview of roles that can access each template.',
-	'version' => '0.1.4',
+	'version' => '0.1.5',
 	'author' => 'Robin Sallis',
 	'href' => 'https://github.com/Toutouwai/ProcessTemplateAccess',
 	'icon' => 'cubes',
@@ -11,6 +11,6 @@ $info = array(
 	'page' => array(
 		'name' => 'template-access',
 		'title' => 'Template Access',
-		'parent' => 'setup',
+		'parent' => 'access',
 	),
 );
