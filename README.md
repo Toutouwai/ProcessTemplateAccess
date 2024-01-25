@@ -1,6 +1,8 @@
 # Template Access
 
-A Process module that provides an editable overview of roles that can access each template.
+A Process module that provides an editable overview of roles that can access each template. 
+
+The module makes it quick and easy to see which templates have access control enabled (personally I like to ensure I've enabled it for every template) and to set the appropriate access per template.
 
 ## Usage
 
