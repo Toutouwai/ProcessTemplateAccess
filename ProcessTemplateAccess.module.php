@@ -24,6 +24,12 @@ class ProcessTemplateAccess extends Process {
 		$input = $this->wire()->input;
 
 		if($input->post('submit')) {
+			// The template permissions that require the role to have "page-edit" permission in order to be effective
+			$page_edit_permissions = [
+				'edit',
+				'create',
+				'add',
+			];
 			$changed_templates = new TemplatesArray();
 			foreach($input->post as $key => $value) {
 				if(substr($key, 0, 4) !== 'pta:') continue;
@@ -43,7 +49,8 @@ class ProcessTemplateAccess extends Process {
 					$template = $templates->get($template_name);
 					$changed_templates->add($template);
 					if($value) {
-						if(!$role->hasPermission('page-edit')) {
+						// Add "page-edit" permission to the role when needed
+						if(!$role->hasPermission('page-edit') && in_array($type, $page_edit_permissions)) {
 							$role->addPermission('page-edit');
 							$role->save();
 						}
